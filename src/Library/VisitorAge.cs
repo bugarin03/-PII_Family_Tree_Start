@@ -1,20 +1,26 @@
 using System;
+using System.Collections.Generic;
 namespace Library
 {
     public class VisitorAge : IVisitor
     {
-        public int Age { get; set;}
+        private List<int> Visited { get; set; }
+        public int Age { get; set; }
         public void AddAges(Node node)
         {
-            this.Age += node.Person.Age;
-
-            Console.WriteLine(Age);
-
-            if (node.Children.Count > 0)
+            if (!Visited.Contains(node.Number))
             {
-                foreach (Node children in node.Children)
+                this.Age += node.Person.Age;
+                //Visited.Add(node.Number);
+                Console.WriteLine(Age);
+
+                if (node.Children.Count > 0)
                 {
-                    children.Accept(this);
+                    foreach (Node children in node.Children)
+                    {
+                        children.Accept(this);
+                        Visited.Add(children.Number);
+                    }
                 }
             }
         }
@@ -22,6 +28,11 @@ namespace Library
         public void Visit(Node node)
         {
             this.AddAges(node);
+        }
+
+        public VisitorAge()
+        {
+            this.Visited = new List<int>();
         }
     }
 }

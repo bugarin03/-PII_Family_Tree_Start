@@ -1,24 +1,30 @@
 using System;
+using System.Collections.Generic;
+
 namespace Library
 {
     public class VisitorOldest : IVisitor
     {
+        private List<int> Visited { get; set; }
         public Node Oldest { get; set; }
 
         public void GetOldest(Node node)
         {
-            if (node.Children.Count > 0)
+            if (!Visited.Contains(node.Number))
             {
-                foreach (Node children in node.Children)
+                if (node.Children.Count > 0)
                 {
-                    if (this.Oldest.Person.Age < children.Person.Age)
+                    foreach (Node children in node.Children)
                     {
-                        this.Oldest = children;
+                        if (this.Oldest.Person.Age < children.Person.Age)
+                        {
+                            this.Oldest = children;
+                        }
+                        children.Accept(this);
                     }
-                    children.Accept(this);
                 }
+                Console.WriteLine(Oldest.Person.Name);
             }
-            Console.WriteLine(Oldest.Person.Name);
         }
         public void Visit(Node node)
         {
@@ -28,6 +34,7 @@ namespace Library
         public VisitorOldest ()
         {
             this.Oldest = new Node(0,0,"Vacio");
+            this.Visited = new List<int>();
         }
     }
 }

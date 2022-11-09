@@ -1,24 +1,29 @@
 using System;
+using System.Collections.Generic;
 
 namespace Library
 {
     public class VisitorName : IVisitor
     {
+        private List<int> Visited { get; set; }
         string WiningName { get; set; }
         public void LongestName(Node node)
         {
-            if (this.WiningName.Length < node.Person.Name.Length)
+            if (!Visited.Contains(node.Number))
             {
-                this.WiningName = node.Person.Name;
-            }
-            Console.WriteLine(this.WiningName);
-
-
-            if (node.Children.Count > 0)
-            {
-                foreach (Node children in node.Children)
+                if (this.WiningName.Length < node.Person.Name.Length)
                 {
-                    children.Accept(this);
+                    this.WiningName = node.Person.Name;
+                }
+                Console.WriteLine(this.WiningName);
+
+
+                if (node.Children.Count > 0)
+                {
+                    foreach (Node children in node.Children)
+                    {
+                        children.Accept(this);
+                    }
                 }
             }
         }
@@ -30,6 +35,7 @@ namespace Library
         public VisitorName()
         {
             this.WiningName = "";
+            this.Visited = new List<int>();
         }
     }
 }
