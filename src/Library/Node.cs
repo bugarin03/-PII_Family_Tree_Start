@@ -40,7 +40,7 @@ namespace Library
 
         public void Accept (IVisitor visitor)
         {
-            visitor.Visit(this);
+            visitor.VisitNode(this);
         }
     }
 }

@@ -1,7 +1,20 @@
+using System.Text;
 namespace Library
 {
-    public interface IVisitor
+    public abstract class IVisitor
     {
-        public void Visit (Node node);
+        protected StringBuilder ContentBuilder { get; } = new StringBuilder();
+
+        public string Content
+        {
+            get
+            {
+                return this.ContentBuilder.ToString();
+            }
+        }
+
+        public abstract void VisitNode (Node node);
+
+        public abstract void VisitPerson (Person person);
     }
 }

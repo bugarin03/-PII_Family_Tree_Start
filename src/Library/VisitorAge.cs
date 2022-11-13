@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 namespace Library
 {
+    
     public class VisitorAge : IVisitor
     {
         private List<int> Visited { get; set; }
@@ -10,8 +11,8 @@ namespace Library
         {
             if (!Visited.Contains(node.Number))
             {
-                this.Age += node.Person.Age;
-                //Visited.Add(node.Number);
+                this.VisitPerson(node.Person);
+                Visited.Add(node.Number);
                 Console.WriteLine(Age);
 
                 if (node.Children.Count > 0)
@@ -19,15 +20,20 @@ namespace Library
                     foreach (Node children in node.Children)
                     {
                         children.Accept(this);
-                        Visited.Add(children.Number);
                     }
                 }
             }
         }
 
-        public void Visit(Node node)
+        public override void VisitNode(Node node)
         {
             this.AddAges(node);
+        }
+
+        public override void VisitPerson(Person person)
+        {
+            person.Accept(this);
+            Age += person.Age;
         }
 
         public VisitorAge()

@@ -6,7 +6,7 @@ namespace Library
     public class VisitorOldest : IVisitor
     {
         private List<int> Visited { get; set; }
-        public Node Oldest { get; set; }
+        public Person Oldest { get; set; }
 
         public void GetOldest(Node node)
         {
@@ -16,24 +16,30 @@ namespace Library
                 {
                     foreach (Node children in node.Children)
                     {
-                        if (this.Oldest.Person.Age < children.Person.Age)
-                        {
-                            this.Oldest = children;
-                        }
+                        this.VisitPerson(children.Person);
                         children.Accept(this);
                     }
                 }
-                Console.WriteLine(Oldest.Person.Name);
+                Console.WriteLine(Oldest.Name);
             }
         }
-        public void Visit(Node node)
+        public override void VisitNode(Node node)
         {
             this.GetOldest(node);
         }
 
-        public VisitorOldest ()
+        public override void VisitPerson(Person person)
         {
-            this.Oldest = new Node(0,0,"Vacio");
+            person.Accept(this);
+            if (this.Oldest.Age < person.Age)
+            {
+                this.Oldest = person;
+            }
+        }
+
+        public VisitorOldest()
+        {
+            this.Oldest = new Person(0, "");
             this.Visited = new List<int>();
         }
     }
